@@ -1,0 +1,83 @@
+Sample Request Response by Postman:
+
+1-Student creation-POST: http://localhost:8080/api/auth/student/signup
+Request:
+{
+    "name": "john",
+    "username": "john",
+    "email": "john@emirates.com",
+    "password": "john123"
+}
+
+Response:
+{
+    "success": true,
+    "message": "User {john} registered successfully"
+}
+
+2-Login-POST: http://localhost:8080/api/auth/login
+Request:
+{
+	"usernameOrEmail":"john",
+	"password": "test123"
+}
+Response:
+{
+    "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNTU4MTgzNzgzLCJleHAiOjE1NTg3ODg1ODN9.qHRLOpB3Q01RkIbSD5KrxvgS-twYnRSXi7ZJmdAtpY0_EK6k_LCmdLhafJxp6-rQDLamzYaPGTpizQj5fySOXQ",
+    "tokenType": "Bearer"
+}
+
+3. View All Courses (need to add bearer token): GET: http://localhost:8080/api/courses/view
+Request:
+
+curl -X GET \
+  http://localhost:8080/api/courses/view \
+  -H 'Accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNTU4MTk4NjQyLCJleHAiOjE1NTgxOTg5NDJ9.BquU7YpskLkyJeDpqDls6L0gY0s6AqFzG7dOOEA7FZb_GaI0QTurHXepGZyw8moWi0aMDGCvutcLP049lPPuqA' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Connection: keep-alive' \
+  -H 'Host: localhost:8080' \
+  -H 'Postman-Token: d58c0e63-2d4e-4037-ae30-d6fbaf3fc49e,79c34363-af49-469a-a0f1-7c1f9adb2235' \
+  -H 'User-Agent: PostmanRuntime/7.13.0' \
+  -H 'accept-encoding: gzip, deflate' \
+  -H 'cache-control: no-cache'
+  
+Response:
+[
+    {
+        "courseId": 1,
+        "name": "computer",
+        "description": "advance java learning"
+    }
+]
+
+4. Add Course(need to add bearer token): POST: http://localhost:8080/api/courses/create
+Request:
+{
+	"name": "computer",
+	"description": "advance java learning"
+}
+
+curl -X POST \
+  http://localhost:8080/api/courses/create \
+  -H 'Accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNTU4MTk5NDM3LCJleHAiOjE1NTgxOTk3Mzd9.yGcMuNcGcgRtot7Yci7nIk6NtDR-DcbF3ZVDW7eVP0j9ruw3nRaxOdf3ecWglD9D4_LVz9f8eb7yvk2V8sso_g' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -H 'Host: localhost:8080' \
+  -H 'Postman-Token: 45159a64-4554-49b6-bc07-257e527bfae8,003fb6c7-894d-4525-9399-d3ae8644266c' \
+  -H 'User-Agent: PostmanRuntime/7.13.0' \
+  -H 'accept-encoding: gzip, deflate' \
+  -H 'cache-control: no-cache' \
+  -H 'content-length: 64' \
+  -d '{
+	"name": "computer",
+	"description": "advance java learning"
+}'
+
+Response:
+{
+    "success": true,
+    "message": "Course Created Successfully"
+}

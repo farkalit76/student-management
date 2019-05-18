@@ -2,7 +2,10 @@ SELECT * FROM usmandb.student;
 
 SELECT * FROM usmandb.roles;
 
-SELECT * FROM usmandb.User_roles;
+SELECT * FROM usmandb.stud_roles;
+
+SELECT * FROM usmandb.courses;
+
 commit;
 
 INSERT INTO roles(name) VALUES('ROLE_USER');
@@ -36,5 +39,13 @@ CREATE TABLE `stud_roles` (
   CONSTRAINT `FKh8ciramu9cc9q3qcqiv4ue8a6` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
   CONSTRAINT `FKo4cstqr5ymhjfw0vfvf8m6m71` FOREIGN KEY (`stud_id`) REFERENCES `student` (`stud_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `courses` (
+  `course_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `description` varchar(145) DEFAULT NULL,
+  PRIMARY KEY (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 

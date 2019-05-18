@@ -3,7 +3,6 @@
  */
 package comf.farkalit.student.service;
 
-import java.security.SignatureException;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -31,10 +30,10 @@ public class JwtTokenProvider {
 
 	private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-	@Value("${app.jwtSecret}")
+	@Value("${student.app.jwtSecret}")
 	private String jwtSecret;
 
-	@Value("${app.jwtExpirationInMs}")
+	@Value("${student.app.jwtExpirationInMs}")
 	private int jwtExpirationInMs;
 
 	public String generateToken(Authentication authentication) {
@@ -61,8 +60,6 @@ public class JwtTokenProvider {
 			System.out.println("validateToken...authToken:"+authToken);
 			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
 			return true;
-		//} catch (SignatureException ex) {
-			//logger.error("Invalid JWT signature");
 		} catch (MalformedJwtException ex) {
 			logger.error("Invalid JWT token");
 		} catch (ExpiredJwtException ex) {

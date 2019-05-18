@@ -54,6 +54,4 @@ public class Courses {
 		this.description = description;
 	}
 	
-	
-	
 }

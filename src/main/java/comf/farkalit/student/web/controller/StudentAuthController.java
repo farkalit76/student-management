@@ -59,7 +59,7 @@ public class StudentAuthController {
 	@Autowired
 	JwtTokenProvider tokenProvider;
 
-	@PostMapping("/signin")
+	@PostMapping("/login")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		System.out.println("authenticateUser .."+loginRequest.toString());
@@ -71,7 +71,7 @@ public class StudentAuthController {
 		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
 	}
 
-	@PostMapping("/signup")
+	@PostMapping("/student/signup")
 	public ResponseEntity<?> registerStudent(@Valid @RequestBody SignUpRequest signUpRequest) {
 		
 		System.out.println("SignUpRequest .."+signUpRequest.toString());		
