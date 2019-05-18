@@ -1,0 +1,30 @@
+Sample Request Response by Postman:
+
+1-POST: http://localhost:8080/api/auth/signup
+Request:
+{
+    "name": "john",
+    "username": "john",
+    "email": "john@emirates.com",
+    "password": "john123"
+}
+
+Response:
+{
+    "success": true,
+    "message": "User {john} registered successfully"
+}
+
+2-POST: http://localhost:8080/api/auth/signin
+Request:
+{
+	"usernameOrEmail":"john",
+	"password": "test123"
+}
+Response:
+{
+    "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNTU4MTgzNzgzLCJleHAiOjE1NTg3ODg1ODN9.qHRLOpB3Q01RkIbSD5KrxvgS-twYnRSXi7ZJmdAtpY0_EK6k_LCmdLhafJxp6-rQDLamzYaPGTpizQj5fySOXQ",
+    "tokenType": "Bearer"
+}
+
+
