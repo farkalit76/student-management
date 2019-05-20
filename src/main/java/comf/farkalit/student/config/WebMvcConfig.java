@@ -3,6 +3,7 @@
  */
 package comf.farkalit.student.config;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author name: Farkalit Usman (FarkalitUsman)
  * @Created on: 18 May 2019
  */
+@Component
 public class WebMvcConfig implements WebMvcConfigurer {
 
 	private final long MAX_AGE_SECS = 3600;
