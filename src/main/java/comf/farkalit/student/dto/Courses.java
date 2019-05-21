@@ -27,6 +27,8 @@ public class Courses {
 	private String name;
 	
 	private String description;
+	
+	private double price;
 
 	public Courses() {}
 	
@@ -52,6 +54,20 @@ public class Courses {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	/**
+	 * @return the price
+	 */
+	public double getPrice() {
+		return price;
+	}
+
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	
 }

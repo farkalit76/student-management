@@ -35,6 +35,7 @@ public class CourseService {
 		
 		course.setName(courseRequest.getName());
 		course.setDescription(courseRequest.getDescription());
+		course.setPrice(courseRequest.getPrice());
 		
 		return courseRepository.save(course);
 	}
