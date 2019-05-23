@@ -1,0 +1,106 @@
+#Redis Implementation
+Step-1:
+Download and install redis server 3.2.100 then start it
+
+From https://redis.io/
+
+C:\Farkalit\Softwares\redis-3.2.100>
+To start server: 
+C:\Farkalit\Softwares\redis-3.2.100>redix-server
+OR with conf file:
+C:\Farkalit\Softwares\redis-3.2.100>redis-server ./conf/redis.conf
+
+To shut down:
+C:\Farkalit\Softwares\redis-3.2.100>redis-cli shutdown
+
+
+For Detail: https://github.com/ServiceStack/redis-windows
+
+Step-2:
+Add the following properties in the springboot\application.properties
+########REDIS server configuration
+spring.redis.host=127.0.0.1
+spring.redis.port=6379
+spring.redis.password=
+spring.redis.lettuce.pool.max-active=7
+spring.redis.lettuce.pool.max-idle=7
+spring.redis.lettuce.pool.min-idle=2
+spring.redis.lettuce.pool.max-wait=1ms
+spring.redis.lettuce.shutdown-timeout= 200ms
+#spring.redis.ssl=false # Whether to enable SSL support.
+
+##Spring cache for Redis server
+spring.cache.redis.cache-null-values= false
+spring.cache.redis.time-to-live =72000
+spring.cache.redis.use-key-prefix= true
+spring.cache.type=redis
+spring.cache.cache-names=courseCache
+
+Step-3:
+Create the REdisManager class to load the server mappings
+@Configuration
+@EnableCaching
+public class RedisCacheManagerResolver {
+
+private final static Logger LOG = LoggerFactory.getLogger(RedisCacheManagerResolver.class);
+	
+	@Value("${spring.redis.host}")
+	String redisHost;
+	
+	@Value("${spring.redis.port}")
+	int redisPort;
+
+	@Value("${spring.redis.password}")
+	String redisPassword;
+	
+	@Value("${spring.cache.redis.time-to-live}")
+	int redisCacheTTL;
+	
+	@Bean
+	@ConditionalOnProperty(name="${spring.cache.type}", havingValue="redis")
+	public LettuceConnectionFactory redisConnectionFactory() {
+		LOG.debug("LettuceConnectionFactory.redisConnectionFactory...");
+		RedisStandaloneConfiguration redisConf = new RedisStandaloneConfiguration();
+		LOG.debug("LettuceConnectionFactory.redisHost:{} , redisPort:{}",redisHost, redisPort);
+		redisConf.setHostName(redisHost);
+		redisConf.setPort(redisPort);
+		redisConf.setPassword(RedisPassword.of(redisPassword));
+		return new LettuceConnectionFactory(redisConf);
+	}
+
+	public RedisCacheConfiguration cacheConfiguration() {
+		LOG.debug("RedisCacheConfiguration.cacheConfiguration...");
+		RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+				.entryTtl(Duration.ofSeconds(redisCacheTTL)).disableCachingNullValues();
+		SerializationPair<String> keySerializationPair = cacheConfig.getKeySerializationPair();
+		cacheConfig.serializeKeysWith(keySerializationPair);
+		return cacheConfig;
+	}
+
+	@Bean
+    @ConditionalOnProperty(name="${spring.cache.type}", havingValue="redis")
+	public RedisCacheManager cacheManager() {
+		LOG.debug("RedisCacheManager.cacheManager...");
+		RedisCacheManager rcm = RedisCacheManager.builder(redisConnectionFactory()).cacheDefaults(cacheConfiguration())
+				.transactionAware().build();
+		LOG.debug("RedisCacheManager.cacheManager...built:{}",rcm);
+		return rcm;
+	}
+}
+
+Step-4:
+Add the @Cacheable annotation to the method which need to be cached.
+
+@Service
+public class CourseService {
+
+	@Autowired
+	private CourseRepository courseRepository;
+	
+	@Cacheable(value = "courseCache", key = "#currentUser.username.concat(#currentUser.name)")
+	public List<Courses> viewAll(StudentPrincipal currentUser){
+		return courseRepository.findAll();
+	}
+}
+
+Note: Make sure the key must be as STRING in the passed parameter. And return Object should be Serializable.

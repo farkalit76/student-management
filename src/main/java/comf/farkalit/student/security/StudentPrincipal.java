@@ -8,11 +8,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import comf.farkalit.student.dto.Student;
 
@@ -29,10 +33,19 @@ public class StudentPrincipal implements UserDetails {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
+    @NotEmpty
+    @JsonProperty("studId")
 	private Long studId;
 
+	@NotNull
+    @NotEmpty
+    @JsonProperty("name")
 	private String name;
 
+	@NotNull
+    @NotEmpty
+    @JsonProperty("username")
 	private String username;
 
 	@JsonIgnore
@@ -128,6 +141,14 @@ public class StudentPrincipal implements UserDetails {
     public int hashCode() {
         return Objects.hash(studId);
     }
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "StudentPrincipal [studId=" + studId + ", name=" + name + ", username=" + username + ", email=" + email + ", authorities=" + authorities + "]";
+	}
 
 
 }

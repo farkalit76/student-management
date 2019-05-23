@@ -6,11 +6,13 @@ package comf.farkalit.student.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import comf.farkalit.student.dto.Courses;
 import comf.farkalit.student.payload.CourseRequest;
 import comf.farkalit.student.repository.CourseRepository;
+import comf.farkalit.student.security.CurrentUser;
 import comf.farkalit.student.security.StudentPrincipal;
 
 /**
@@ -26,6 +28,7 @@ public class CourseService {
 	@Autowired
 	private CourseRepository courseRepository;
 	
+	@Cacheable(value = "courseCache", key = "#currentUser.username.concat(#currentUser.name)")
 	public List<Courses> viewAll(StudentPrincipal currentUser){
 		return courseRepository.findAll();
 	}

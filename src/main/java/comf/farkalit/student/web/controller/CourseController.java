@@ -47,8 +47,9 @@ public class CourseController {
 	private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
 	@RequestMapping(method = RequestMethod.GET, value = "/view", produces = "application/json")
+	@PreAuthorize("hasRole('USER')")
 	public List<Courses> viewAll(@CurrentUser StudentPrincipal currentUser) {
-		System.out.println("view all courses");
+		System.out.println("view all courses for currentUser:"+currentUser.toString());
 		return courseService.viewAll(currentUser);
 	}
 
